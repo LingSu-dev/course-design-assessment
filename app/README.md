@@ -38,3 +38,9 @@ db = {
     ...
 }
 
+# code practice/design choice
+
+1. Use early returns instead of long if statements to ensure future extensiability of code. (for example, if more filters are needed in the future before processing a request)
+2. Try to keep time complexity low when retrieving information, it's fine to shift complexity to addition of information. Sacrificing a bit of space complexity is fine. 
+3. 
+

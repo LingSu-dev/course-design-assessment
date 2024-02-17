@@ -62,14 +62,21 @@ class TestCourseServiceImpl(unittest.TestCase):
         avg_grade = self.course_service.get_assignment_grade_avg(course_id, assignment_id)
         self.assertEqual(avg_grade, 90)
 
+    def test_quickselects_kth_largest_element(self):
+        arr = [(1, 5), (2, 2), (3, 8), (4, 1), (5, 9), (6, 3)]
+        low = 0
+        high = len(arr) - 1
+        selected = self.course_service.quickselect(arr, low, high, 2)
+        self.assertEqual(selected, (1, 5))
+
     def test_get_top_five_students(self):
         course_id = self.course_service.create_course("Math")
-        for i in range(1, 6):
+        for i in range(1, 7):
             self.course_service.enroll_student(course_id, i)
             assignment_id = self.course_service.create_assignment(course_id, f"Homework {i}")
             self.course_service.submit_assignment(course_id, i, assignment_id, i * 10)
         top_students = self.course_service.get_top_five_students(course_id)
-        self.assertEqual(top_students, [5, 4, 3, 2, 1])
+        self.assertEqual(top_students, [6, 5, 4, 3, 2])
 
 if __name__ == '__main__':
     unittest.main()
