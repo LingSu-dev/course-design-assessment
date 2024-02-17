@@ -4,6 +4,8 @@ db = {
 
     course_id: {
     
+    course_name: STRING,
+    
     assignments: {
     
         assignment_id:{

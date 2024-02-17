@@ -11,6 +11,7 @@ class CourseServiceImpl(CourseService):
     self.course_id = 0
     self.assignment_id = 0
     self.db = {}
+    # Please see app/README.md for database schema. 
 
   # Course implementation
 
@@ -23,6 +24,7 @@ class CourseServiceImpl(CourseService):
   def create_course(self, course_name):
     self.course_id += 1
     self.db[self.course_id] = {
+      'course_name': course_name,
       'assignments': {},
       'students': {}
     }

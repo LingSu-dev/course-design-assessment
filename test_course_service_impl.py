@@ -12,7 +12,7 @@ class TestCourseServiceImpl(unittest.TestCase):
     def test_get_course_by_id(self):
         course_id = self.course_service.create_course("Math")
         course = self.course_service.get_course_by_id(course_id)
-        self.assertEqual(course, {'assignments': {}, 'students': {}})
+        self.assertEqual(course, {'assignments': {}, 'course_name': 'Math', 'students': {}})
 
     def test_create_course(self):
         course_id = self.course_service.create_course("Math")
