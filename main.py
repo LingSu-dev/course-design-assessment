@@ -7,5 +7,11 @@ if __name__ == "__main__":
   # Start receiving requests...
 
   course_service.create_course("CSCC73")
-  result = course_service.get_courses()
-  print(result)
+  print(course_service.get_courses())
+  print(course_service.get_course_by_id(1))
+  print(course_service.delete_course(1))
+  print(course_service.get_courses())
+  course_service.create_course("CSCC73")
+  print(course_service.create_assignment(2, "Algorithms 1"))
+  print(course_service.get_courses())
+
