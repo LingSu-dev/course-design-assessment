@@ -46,7 +46,7 @@ class TestCourseServiceImpl(unittest.TestCase):
         result = self.course_service.submit_assignment(course_id, 1, assignment_id, 90)
         self.assertTrue(result)
 
-    def test_get_student_grade_avg(self):
+    def test_single_get_student_grade_avg(self):
         course_id = self.course_service.create_course("Math")
         self.course_service.enroll_student(course_id, 1)
         assignment_id = self.course_service.create_assignment(course_id, "Homework 1")
@@ -54,11 +54,35 @@ class TestCourseServiceImpl(unittest.TestCase):
         avg_grade = self.course_service.get_student_grade_avg(course_id, 1)
         self.assertEqual(avg_grade, 90)
 
-    def test_get_assignment_grade_avg(self):
+    def test_multiple_submission_get_student_grade_avg(self):
         course_id = self.course_service.create_course("Math")
         self.course_service.enroll_student(course_id, 1)
         assignment_id = self.course_service.create_assignment(course_id, "Homework 1")
         self.course_service.submit_assignment(course_id, 1, assignment_id, 90)
+        assignment_id = self.course_service.create_assignment(course_id, "Homework 2")
+        self.course_service.submit_assignment(course_id, 1, assignment_id, 80)
+        assignment_id = self.course_service.create_assignment(course_id, "Homework 3")
+        self.course_service.submit_assignment(course_id, 1, assignment_id, 85)
+        avg_grade = self.course_service.get_student_grade_avg(course_id, 1)
+        self.assertEqual(avg_grade, 85)
+
+    def test_single_get_assignment_grade_avg(self):
+        course_id = self.course_service.create_course("Math")
+        self.course_service.enroll_student(course_id, 1)
+        assignment_id = self.course_service.create_assignment(course_id, "Homework 1")
+        self.course_service.submit_assignment(course_id, 1, assignment_id, 90)
+        avg_grade = self.course_service.get_assignment_grade_avg(course_id, assignment_id)
+        self.assertEqual(avg_grade, 90)
+    
+    def test_multiple_get_assignment_grade_avg(self):
+        course_id = self.course_service.create_course("Math")
+        self.course_service.enroll_student(course_id, 1)
+        self.course_service.enroll_student(course_id, 2)
+        self.course_service.enroll_student(course_id, 3)
+        assignment_id = self.course_service.create_assignment(course_id, "Homework 1")
+        self.course_service.submit_assignment(course_id, 1, assignment_id, 90)
+        self.course_service.submit_assignment(course_id, 2, assignment_id, 100)
+        self.course_service.submit_assignment(course_id, 3, assignment_id, 80)
         avg_grade = self.course_service.get_assignment_grade_avg(course_id, assignment_id)
         self.assertEqual(avg_grade, 90)
 
@@ -77,6 +101,17 @@ class TestCourseServiceImpl(unittest.TestCase):
             self.course_service.submit_assignment(course_id, i, assignment_id, i * 10)
         top_students = self.course_service.get_top_five_students(course_id)
         self.assertEqual(top_students, [6, 5, 4, 3, 2])
+    
+    def test_all_ties_get_top_five_students(self):
+        course_id = self.course_service.create_course("Math")
+        for i in range(1, 7):
+            self.course_service.enroll_student(course_id, i)
+            assignment_id = self.course_service.create_assignment(course_id, f"Homework {i}")
+        for i in range(1, 7):
+            for j in range(1, 7):
+                self.course_service.submit_assignment(course_id, i, j, 90)
+        top_students = self.course_service.get_top_five_students(course_id)
+        self.assertEqual(top_students, [1, 2, 3, 4, 5])
 
 if __name__ == '__main__':
     unittest.main()
