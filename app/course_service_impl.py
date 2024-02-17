@@ -19,13 +19,17 @@ class CourseServiceImpl(CourseService):
     """
     Returns a list of all courses.
     """
-    return list(self.db.values())
+    return list(self.db.items())
 
   def get_course_by_id(self, course_id):
     """
     Returns a course by its id.
+    returns None if no course match ID
     """
-    return self.db.get(course_id)
+    if course_id not in self.db:
+        return None
+
+    return self.db[course_id]
 
   def create_course(self, course_name):
     """
@@ -199,7 +203,9 @@ class CourseServiceImpl(CourseService):
     if course_id not in self.db:
       return []
     if len(self.db[course_id]['students']) <= 5:
-      return list(self.db[course_id]['students'].keys())
+      students = list(self.db[course_id]['students'].keys())
+      students.sort(key=lambda student_id: self.get_student_grade_avg(course_id, student_id), reverse=True)
+      return students
     
     grades = []
     for student_id, student in self.db[course_id]['students'].items():
